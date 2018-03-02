@@ -223,12 +223,29 @@ String OpenLog::getNextDirectoryItem()
 
 }
 
+//Remove a file, wildcards supported
+//OpenLog will respond with the number of items removed
+uint32_t OpenLog::removeFile(String thingToDelete)
+{
+	return(remove(thingToDelete, false));
+}
+
+//Remove a directory, wildcards supported
+//OpenLog will respond with 1 when removing a directory
+uint32_t OpenLog::removeDirectory(String thingToDelete)
+{
+	return(remove(thingToDelete, true)); //Delete all files in the directory as well
+}
+
 //Remove a file or directory (including everything in that directory)
 //OpenLog will respond with the number of items removed
 //Returns 1 if only a directory is removed (even if directory had files in it)
-uint32_t OpenLog::remove(String thingToDelete)
+uint32_t OpenLog::remove(String thingToDelete, boolean removeEverything)
 {
-  sendCommand(F("rm"), F("-rf"), thingToDelete); //-rf causes any directory to remove contents as well
+  if(removeEverything == true)
+	sendCommand(F("rm"), F("-rf"), thingToDelete); //-rf causes any directory to remove contents as well
+  else
+	sendCommand(F("rm"), thingToDelete); //Just delete a thing
     
   //Upon completion Qwiic OpenLog will have 4 bytes ready to read, representing the number of files beleted
 

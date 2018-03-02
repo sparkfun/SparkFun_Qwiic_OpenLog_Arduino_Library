@@ -104,7 +104,9 @@ class OpenLog : public Print {
     boolean searchDirectory(String options); //Search the current directory for a given wildcard
     String getNextDirectoryItem(); //Return the next file or directory from the search
 
-    uint32_t remove(String thingToDelete); //Remove file or directory including the contents of the directory
+    uint32_t removeFile(String thingToDelete); //Remove file
+    uint32_t removeDirectory(String thingToDelete); //Remove a directory including the contents of the directory
+    uint32_t remove(String thingToDelete, boolean removeEverthing); //Remove file or directory including the contents of the directory
 
     //These are the core functions that send a command to OpenLog
     boolean sendCommand(String command);

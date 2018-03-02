@@ -27,6 +27,8 @@ size		 KEYWORD2
 read		 KEYWORD2
 searchDirectory		 KEYWORD2
 getNextDirectoryItem		 KEYWORD2
+removeFile 		KEYWORD2
+removeDirectory 		KEYWORD2
 remove 		KEYWORD2
 sendCommand		 KEYWORD2
 

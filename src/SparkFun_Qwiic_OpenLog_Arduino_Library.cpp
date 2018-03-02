@@ -1,17 +1,17 @@
 /*
-  This is a library written for the [device name]
+  This is a library written for the Qwiic OpenLog
   SparkFun sells these at its website: www.sparkfun.com
   Do you like this library? Help support SparkFun. Buy a board!
-  https://www.sparkfun.com/products/[device product ID]
+  https://www.sparkfun.com/products/14641
 
-  Written by Nathan Seidle @ SparkFun Electronics, December 28th, 2017
+  Written by Nathan Seidle @ SparkFun Electronics, February 2nd, 2018
 
-  The [device name] can remotely measure object temperatures within 1 degree C.
+  Qwiic OpenLog makes it very easy to record data over I2C to a microSD.
 
-  This library handles the initialization of the [device name] and the calculations
+  This library handles the initialization of the Qwiic OpenLog and the calculations
   to get the temperatures.
 
-  https://github.com/sparkfun/SparkFun_[device name]_Arduino_Library
+  https://github.com/sparkfun/SparkFun_Qwiic_OpenLog_Arduino_Library
 
   Development environment specifics:
   Arduino IDE 1.8.3

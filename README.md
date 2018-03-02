@@ -1,11 +1,11 @@
 SparkFun Qwiic OpenLog Library
 ===========================================================
 
-![SparkFun Qwiic OpenLog](https://cdn.sparkfun.com//assets/parts/1/2/8/2/4/14641-Qwiic_OpenLog_03.jpg)
+![SparkFun Qwiic OpenLog](https://cdn.sparkfun.com//assets/parts/1/2/8/2/4/14641-Qwiic_OpenLog_05.jpg)
 
 [*SparkX Qwiic OpenLog (SPX-14641)*](https://www.sparkfun.com/products/14641)
 
-This library makes using the Qwiic OpenLog easy to use. It overrides the Print class so that you can do things like
+This library makes using the Qwiic OpenLog easy to use. It creates a Print class so that you can do things like
 
     mylogger.print("The battery voltage is:");
     mylogger.println(batteryVoltage);
@@ -14,20 +14,20 @@ And your data will be recorded to LOG00001.TXT for later review. Please see the 
 
 Available commands:
 
-* boolean begin(int deviceAddress) - Start comminication with a given OpenLog
-* String getVersion() - Returns a string that is the current firmware version
-* uint8_t getStatus() - Returns various status bits
-* boolean setI2CAddress(uint8_t addr) - Set the I2C address of the OpenLog
-* boolean append(String fileName) - Open and append to a file
-* boolean create(String fileName) - Create a file but don't open it for writing
-* boolean makeDirectory(String directoryName) - Create the given directory
-* boolean changeDirectory(String directoryName) - Change to the given directory
-* int32_t size(String fileName) - Given a file name, read the size of the file
-* void read(uint8_t* userBuffer, uint16_t bufferSize, String fileName) - Read the contents of a file into the provided buffer
-* boolean searchDirectory(String options) - Search the current directory for a given wildcard
-* String getNextDirectoryItem() - Return the next file or directory from the search
-* uint32_t remove(String thingToDelete) - Remove file or directory including the contents of the directory
-* boolean sendCommand(String command) - Send low-level command to OpenLog
+* boolean **begin**(int deviceAddress) - Start comminication with a given OpenLog
+* String **getVersion**() - Returns a string that is the current firmware version
+* uint8_t **getStatus**() - Returns various status bits
+* boolean **setI2CAddress**(uint8_t addr) - Set the I2C address of the OpenLog
+* boolean **append**(String fileName) - Open and append to a file
+* boolean **create**(String fileName) - Create a file but don't open it for writing
+* boolean **makeDirectory**(String directoryName) - Create the given directory
+* boolean **changeDirectory**(String directoryName) - Change to the given directory
+* int32_t **size**(String fileName) - Given a file name, read the size of the file
+* void **read**(uint8_t* userBuffer, uint16_t bufferSize, String fileName) - Read the contents of a file into the provided buffer
+* boolean **searchDirectory**(String options) - Search the current directory for a given wildcard
+* String **getNextDirectoryItem**() - Return the next file or directory from the search
+* uint32_t **remove**(String thingToDelete) - Remove file or directory including the contents of the directory
+* boolean **sendCommand**(String command) - Send low-level command to OpenLog
 
 The SparkFun Qwiic OpenLog is the smarter and better looking cousin to the extremely popular [OpenLog](https://www.sparkfun.com/products/13712). We've ported the serial based interface to I2C. Now you can daisy chain lots of I2C devices and log them all without taking up your serial port.
 

@@ -15,6 +15,7 @@ RFD77402 KEYWORD1
 begin					KEYWORD2
 
 write 		KEYWORD2
+directWrite		KEYWORD2
 begin		 KEYWORD2
 getVersion		 KEYWORD2
 getStatus		 KEYWORD2

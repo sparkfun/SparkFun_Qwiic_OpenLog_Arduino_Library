@@ -73,8 +73,6 @@
 #endif
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-//Registers
-#define THISREGISTER 0x0F
 
 class OpenLog : public Print {
 
@@ -83,6 +81,7 @@ class OpenLog : public Print {
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
     virtual size_t write(uint8_t *buffer, size_t size);
     virtual size_t write(uint8_t character);
+	boolean directWrite(String myString); //Faster direct writing. Avoids built-in print function overhead.
 
     //By default use the default I2C addres, and use Wire port
     boolean begin(uint8_t deviceAddress = QOL_DEFAULT_ADDRESS, TwoWire &wirePort = Wire);

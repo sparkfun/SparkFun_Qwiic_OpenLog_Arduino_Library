@@ -220,6 +220,9 @@ String OpenLog::getNextDirectoryItem()
 
     charsReceived++;
   }
+  
+  //We shouldn't get this far but if we do
+  return(itemName);
 
 }
 
@@ -322,7 +325,7 @@ size_t OpenLog::write(uint8_t *buffer, size_t size) {
 
   uint8_t startPoint = 0;
   const char subBuffer[I2C_BUFFER_LENGTH];
-
+  
   while (startPoint < size)
   {
     //Pick the smaller of 32 or the remaining number of characters to send
@@ -341,4 +344,27 @@ size_t OpenLog::write(uint8_t *buffer, size_t size) {
   }
 
   return (size);
+}
+
+//Write a string to Qwiic OpenLong
+//Arduino has limit of 32 bytes per write
+//This splits writes up into 32 byte chunks
+boolean OpenLog::directWrite(String myString)
+{
+  while (myString.length() > 0)
+  {
+    //Pick the smaller of 32 or the length of the string to send
+    byte toSend = I2C_BUFFER_LENGTH;
+    if (myString.length() < toSend) toSend = myString.length();
+
+    _i2cPort->beginTransmission(_deviceAddress);
+    _i2cPort->print(myString.substring(0, toSend));
+    if (_i2cPort->endTransmission() != 0)
+		return(0); //Error: Sensor did not ack
+
+    //Remove what we just sent from the big string
+    myString = myString.substring(toSend, myString.length());
+  }
+  
+  return(1); //Done!
 }

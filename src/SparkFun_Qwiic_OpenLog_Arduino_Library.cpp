@@ -324,12 +324,12 @@ size_t OpenLog::write(uint8_t character) {
 size_t OpenLog::write(uint8_t *buffer, size_t size) {
 
   uint8_t startPoint = 0;
-  const char subBuffer[I2C_BUFFER_LENGTH];
+  char subBuffer[I2C_BUFFER_LENGTH];
   
   while (startPoint < size)
   {
     //Pick the smaller of 32 or the remaining number of characters to send
-    byte endPoint = startPoint + I2C_BUFFER_LENGTH;
+    uint8_t endPoint = startPoint + I2C_BUFFER_LENGTH;
     if (endPoint > size) endPoint = size;
 
     //Copy a subset of the buffer to a temp sub buffer
@@ -354,7 +354,7 @@ boolean OpenLog::directWrite(String myString)
   while (myString.length() > 0)
   {
     //Pick the smaller of 32 or the length of the string to send
-    byte toSend = I2C_BUFFER_LENGTH;
+    uint8_t toSend = I2C_BUFFER_LENGTH;
     if (myString.length() < toSend) toSend = myString.length();
 
     _i2cPort->beginTransmission(_deviceAddress);

@@ -58,11 +58,15 @@ boolean OpenLog::begin(int deviceAddress)
 //Get the version number from OpenLog
 String OpenLog::getVersion()
 {
-  sendCommand(F("ver"));
+  sendCommand(registerMap.firmwareMajor);
   //Upon completion Qwiic OpenLog will have 2 bytes ready to be read
-  _i2cPort->requestFrom(_deviceAddress, (uint8_t)2);
+  _i2cPort->requestFrom(_deviceAddress, (uint8_t)1);
 
-  uint8_t versionMajor = _i2cPort->read();
+  uint8_t versionMajor = _i2cPort->read(); 
+  sendCommand(registerMap.firmwareMinor);
+  //Upon completion Qwiic OpenLog will have 2 bytes ready to be read
+  _i2cPort->requestFrom(_deviceAddress, (uint8_t)1);
+
   uint8_t versionMinor = _i2cPort->read();
 
   return(String(versionMajor) + "." + String(versionMinor));
@@ -81,7 +85,7 @@ String OpenLog::getVersion()
 //  Bit 7: 0 - Future Use
 uint8_t OpenLog::getStatus()
 {
-  sendCommand(F("stat"));
+  sendCommand(registerMap.status);
   //Upon completion OpenLog will have a status byte ready to read
 
   _i2cPort->requestFrom(_deviceAddress, (uint8_t)1);
@@ -93,7 +97,9 @@ uint8_t OpenLog::getStatus()
 //This will be recorded to OpenLog's EEPROM and config.txt file.
 boolean OpenLog::setI2CAddress(uint8_t addr)
 {
-  boolean result = sendCommand(F("adr"), String(addr, DEC));
+  String temp;
+  temp = addr;
+  boolean result = sendCommand(registerMap.i2cAddress, temp);
 
   //Upon completion any new communication must be with this new I2C address  
 
@@ -105,21 +111,21 @@ boolean OpenLog::setI2CAddress(uint8_t addr)
 //Append to a given file. If it doesn't exist it will be created
 boolean OpenLog::append(String fileName)
 {
-  return (sendCommand(F("append"), fileName));
+  return (sendCommand(registerMap.openFile, fileName));
   //Upon completion any new characters sent to OpenLog will be recorded to this file
 }
 
 //Create a given file in the current directory
 boolean OpenLog::create(String fileName)
 {
-  return (sendCommand(F("new"), fileName));
+  return (sendCommand(registerMap.createFile, fileName));
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
 //Given a directory name, create it in whatever directory we are currently in
 boolean OpenLog::makeDirectory(String directoryName)
 {
-  return (sendCommand(F("md"), directoryName));
+  return (sendCommand(registerMap.mkDir, directoryName));
   //Upon completion Qwiic OpenLog will respond with its status
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
@@ -127,7 +133,7 @@ boolean OpenLog::makeDirectory(String directoryName)
 //Given a directory name, change to that directory
 boolean OpenLog::changeDirectory(String directoryName)
 {
-  return (sendCommand(F("cd"), directoryName));
+  return (sendCommand(registerMap.cd, directoryName));
   //Upon completion Qwiic OpenLog will respond with its status
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
@@ -135,7 +141,7 @@ boolean OpenLog::changeDirectory(String directoryName)
 //Return the size of a given file. Returns a 4 byte signed long
 int32_t OpenLog::size(String fileName)
 {
-  sendCommand(F("size"), fileName);
+  sendCommand(registerMap.fileSize, fileName);
   //Upon completion Qwiic OpenLog will have 4 bytes ready to be read
 
   _i2cPort->requestFrom(_deviceAddress, (uint8_t)4);
@@ -151,19 +157,12 @@ int32_t OpenLog::size(String fileName)
   return (fileSize);
 }
 
-//Read the contents of a file, up to the size of the buffer, into a given array, from the start of the file
-void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, String fileName)
-{
-  read(userBuffer, bufferSize, fileName, 0);
-}
-
 //Read the contents of a file, up to the size of the buffer, into a given array, from a given spot
-void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, String fileName, uint16_t startingSpot)
+void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, String fileName)
 {
   uint16_t spotInBuffer = 0;
   uint16_t leftToRead = bufferSize; //Read up to the size of our buffer. We may go past EOF.
-
-  sendCommand(F("read"), fileName, String(startingSpot));
+  sendCommand(registerMap.readFile, fileName);
   //Upon completion Qwiic OpenLog will respond with the file contents. Master can request up to 32 bytes at a time.
   //Qwiic OpenLog will respond until it reaches the end of file then it will report zeros.
 
@@ -184,7 +183,7 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, String fileName, ui
 //Returns true if OpenLog ack'd. Use getNextDirectoryItem() to get the first item.
 boolean OpenLog::searchDirectory(String options)
 {
-  if (sendCommand(F("ls"), options) == true)
+  if (sendCommand(registerMap.list, options) == true)
   {
     _searchStarted = true;
     return (true);
@@ -246,9 +245,9 @@ uint32_t OpenLog::removeDirectory(String thingToDelete)
 uint32_t OpenLog::remove(String thingToDelete, boolean removeEverything)
 {
   if(removeEverything == true)
-	sendCommand(F("rm"), F("-rf"), thingToDelete); //-rf causes any directory to remove contents as well
+	sendCommand(registerMap.rmrf, thingToDelete); //-rf causes any directory to remove contents as well
   else
-	sendCommand(F("rm"), thingToDelete); //Just delete a thing
+	sendCommand(registerMap.rm, thingToDelete); //Just delete a thing
     
   //Upon completion Qwiic OpenLog will have 4 bytes ready to read, representing the number of files beleted
 
@@ -268,39 +267,17 @@ uint32_t OpenLog::remove(String thingToDelete, boolean removeEverything)
 }
 
 
-//Send just a command to the unit (such as "default" or "init")
-boolean OpenLog::sendCommand(String command)
-{
-  return (sendCommand(command, "", ""));
-}
-
-//Send a command to the unit with one option (such as "esc 40")
-//This is the most comment
-boolean OpenLog::sendCommand(String command, String option1)
-{
-  return (sendCommand(command, option1, ""));
-}
-
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
-boolean OpenLog::sendCommand(String command, String option1, String option2)
+boolean OpenLog::sendCommand(uint8_t registerNumber, String option1 = "")
 {
   _i2cPort->beginTransmission(_deviceAddress);
-
-  for (uint8_t x = 0 ; x < _escapeCharacterCount ; x++)
-    _i2cPort->write(_escapeCharacter); //Send the necessary escape characters
-
-  _i2cPort->print(command);
+  _i2cPort->write(registerNumber);
   if (option1.length() > 0)
   {
-    _i2cPort->print(" "); //Include space
+    //_i2cPort->print(" "); //Include space
     _i2cPort->print(option1);
   }
-  if (option2.length() > 0)
-  {
-    _i2cPort->print(" "); //Include space
-    _i2cPort->print(option2);
-  }
-
+  
   if (_i2cPort->endTransmission() != 0)
     return (false);
 
@@ -311,60 +288,10 @@ boolean OpenLog::sendCommand(String command, String option1, String option2)
 //Write a single character to Qwiic OpenLog
 size_t OpenLog::write(uint8_t character) {
   _i2cPort->beginTransmission(_deviceAddress);
+  _i2cPort->write(registerMap.writeFile);//Send the byte that corresponds to writing a file
   _i2cPort->write(character);
   if (_i2cPort->endTransmission() != 0)
     return (0); //Error: Sensor did not ack
 
   return (1);
-}
-
-//Write a string to Qwiic OpenLong
-//The common Arduinos have a limit of 32 bytes per I2C write
-//This splits writes up into I2C_BUFFER_LENGTH sized chunks
-size_t OpenLog::write(uint8_t *buffer, size_t size) {
-
-  uint8_t startPoint = 0;
-  char subBuffer[I2C_BUFFER_LENGTH];
-  
-  while (startPoint < size)
-  {
-    //Pick the smaller of 32 or the remaining number of characters to send
-    uint8_t endPoint = startPoint + I2C_BUFFER_LENGTH;
-    if (endPoint > size) endPoint = size;
-
-    //Copy a subset of the buffer to a temp sub buffer
-    memcpy(subBuffer, &buffer[startPoint], endPoint - startPoint);
-
-    _i2cPort->beginTransmission(_deviceAddress);
-    _i2cPort->print(subBuffer); //Send the subBuffer
-    if (_i2cPort->endTransmission() != 0)
-      return (0); //Error: Sensor did not ack
-
-    startPoint = endPoint; //Advance the start point
-  }
-
-  return (size);
-}
-
-//Write a string to Qwiic OpenLong
-//Arduino has limit of 32 bytes per write
-//This splits writes up into 32 byte chunks
-boolean OpenLog::directWrite(String myString)
-{
-  while (myString.length() > 0)
-  {
-    //Pick the smaller of 32 or the length of the string to send
-    uint8_t toSend = I2C_BUFFER_LENGTH;
-    if (myString.length() < toSend) toSend = myString.length();
-
-    _i2cPort->beginTransmission(_deviceAddress);
-    _i2cPort->print(myString.substring(0, toSend));
-    if (_i2cPort->endTransmission() != 0)
-		return(0); //Error: Sensor did not ack
-
-    //Remove what we just sent from the big string
-    myString = myString.substring(toSend, myString.length());
-  }
-  
-  return(1); //Done!
 }

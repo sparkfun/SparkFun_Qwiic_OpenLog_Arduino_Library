@@ -27,7 +27,6 @@ Available commands:
 * boolean **searchDirectory**(String options) - Search the current directory for a given wildcard
 * String **getNextDirectoryItem**() - Return the next file or directory from the search
 * uint32_t **remove**(String thingToDelete) - Remove file or directory including the contents of the directory
-* boolean **sendCommand**(String command) - Send low-level command to OpenLog
 
 The SparkFun Qwiic OpenLog is the smarter and better looking cousin to the extremely popular [OpenLog](https://www.sparkfun.com/products/13712). We've ported the serial based interface to I2C. Now you can daisy chain lots of I2C devices and log them all without taking up your serial port.
 

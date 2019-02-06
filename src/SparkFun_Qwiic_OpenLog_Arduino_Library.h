@@ -77,11 +77,49 @@
 class OpenLog : public Print {
 
   public:
+  
+	struct memoryMap {
+		byte id;
+		byte status;
+		byte firmwareMajor;
+		byte firmwareMinor;
+		byte i2cAddress;
+		byte logInit;
+		byte createFile;
+		byte mkDir;
+		byte cd;
+		byte readFile;
+		byte startPosition;
+		byte openFile;
+		byte writeFile;
+		byte fileSize;
+		byte list;
+		byte rm;
+		byte rmrf;
+	};
+
+	const memoryMap registerMap = {
+		.id = 0x00,
+		.status = 0x01,
+		.firmwareMajor = 0x02,
+		.firmwareMinor = 0x03,
+		.i2cAddress = 0x1E,
+		.logInit = 0x05,
+		.createFile = 0x06,
+		.mkDir = 0x07,
+		.cd = 0x08,
+		.readFile = 0x09,
+		.startPosition = 0x0A,
+		.openFile = 0x0B,
+		.writeFile = 0x0C,
+		.fileSize = 0x0D,
+		.list = 0x0E,
+		.rm = 0x0F,
+		.rmrf = 0x10,
+	};
     //These functions override the built-in print functions so that when the user does an 
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
-    virtual size_t write(uint8_t *buffer, size_t size);
     virtual size_t write(uint8_t character);
-	boolean directWrite(String myString); //Faster direct writing. Avoids built-in print function overhead.
 
     //By default use the default I2C addres, and use Wire port
     boolean begin(uint8_t deviceAddress = QOL_DEFAULT_ADDRESS, TwoWire &wirePort = Wire);
@@ -98,7 +136,6 @@ class OpenLog : public Print {
     int32_t size(String fileName); //Given a file name, read the size of the file
 
     void read(uint8_t* userBuffer, uint16_t bufferSize, String fileName); //Read the contents of a file into the provided buffer
-    void read(uint8_t* userBuffer, uint16_t bufferSize, String fileName, uint16_t startingSpot);
 
     boolean searchDirectory(String options); //Search the current directory for a given wildcard
     String getNextDirectoryItem(); //Return the next file or directory from the search
@@ -108,9 +145,7 @@ class OpenLog : public Print {
     uint32_t remove(String thingToDelete, boolean removeEverthing); //Remove file or directory including the contents of the directory
 
     //These are the core functions that send a command to OpenLog
-    boolean sendCommand(String command);
-    boolean sendCommand(String command, String option1);
-    boolean sendCommand(String command, String option1, String option2);
+    boolean sendCommand(uint8_t registerNumber, String option1 = "");
 
   private:
 

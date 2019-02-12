@@ -1,9 +1,10 @@
 SparkFun Qwiic OpenLog Library
 ===========================================================
 
-![SparkFun Qwiic OpenLog](https://cdn.sparkfun.com//assets/parts/1/2/8/2/4/14641-Qwiic_OpenLog_05.jpg)
+![SparkFun Qwiic OpenLog](https://cdn.sparkfun.com/assets/parts/1/3/5/5/4/15164-SparkFun_Qwiic_OpenLog-01.jpg)
 
-[*SparkX Qwiic OpenLog (SPX-14641)*](https://www.sparkfun.com/products/14641)
+[*SparkFun Qwiic OpenLog (DEV-15164)*](https://www.sparkfun.com/products/15164)
+
 
 This library makes using the Qwiic OpenLog easy to use. It creates a Print class so that you can do things like
 
@@ -52,7 +53,8 @@ Documentation
 --------------
 
 * **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
-* **[Product Repository](https://github.com/sparkfunX/Qwiic_OpenLog)** - Main repository (including hardware files)
+* **[Hookup Guide](https://learn.sparkfun.com/tutorials/qwiic-openlog-hookup-guide)** - Basic information on how to install an Arduino library.
+* **[Product Repository](https://github.com/sparkfun/Qwiic_OpenLog)** - Main repository (including hardware files)
 
 License Information
 -------------------

@@ -12,26 +12,25 @@ OpenLog	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-begin	KEYWORD2
+begin					KEYWORD2
 
-write	KEYWORD2
-directWrite	KEYWORD2
-begin	KEYWORD2
-getVersion		KEYWORD2
-getStatus	KEYWORD2
-seteI2CAddress	KEYWORD2
-append	KEYWORD2
-create	KEYWORD2
-makeDirectory	KEYWORD2
-changeDirectory	KEYWORD2
-size	KEYWORD2
-read	KEYWORD2
-searchDirectory	KEYWORD2
+write					KEYWORD2
+begin					KEYWORD2
+getVersion				KEYWORD2
+getStatus				KEYWORD2
+setI2CAddress			KEYWORD2
+append					KEYWORD2
+create					KEYWORD2
+makeDirectory			KEYWORD2
+changeDirectory			KEYWORD2
+size					KEYWORD2
+read					KEYWORD2
+searchDirectory			KEYWORD2
 getNextDirectoryItem	KEYWORD2
-removeFile	KEYWORD2
-removeDirectory	KEYWORD2
-remove	KEYWORD2
-sendCommand	KEYWORD2
+removeFile				KEYWORD2
+removeDirectory			KEYWORD2
+remove					KEYWORD2
+sendCommand				KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

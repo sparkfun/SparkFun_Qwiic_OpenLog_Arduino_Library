@@ -58,12 +58,12 @@ boolean OpenLog::begin(int deviceAddress)
 //Get the version number from OpenLog
 String OpenLog::getVersion()
 {
-  sendCommand(registerMap.firmwareMajor);
+  sendCommand(registerMap.firmwareMajor, "");
   //Upon completion Qwiic OpenLog will have 2 bytes ready to be read
   _i2cPort->requestFrom(_deviceAddress, (uint8_t)1);
 
   uint8_t versionMajor = _i2cPort->read(); 
-  sendCommand(registerMap.firmwareMinor);
+  sendCommand(registerMap.firmwareMinor, "");
   //Upon completion Qwiic OpenLog will have 2 bytes ready to be read
   _i2cPort->requestFrom(_deviceAddress, (uint8_t)1);
 
@@ -85,7 +85,7 @@ String OpenLog::getVersion()
 //  Bit 7: 0 - Future Use
 uint8_t OpenLog::getStatus()
 {
-  sendCommand(registerMap.status);
+  sendCommand(registerMap.status, "");
   //Upon completion OpenLog will have a status byte ready to read
 
   _i2cPort->requestFrom(_deviceAddress, (uint8_t)1);

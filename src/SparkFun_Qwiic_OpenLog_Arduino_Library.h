@@ -145,7 +145,7 @@ class OpenLog : public Print {
     uint32_t remove(String thingToDelete, boolean removeEverthing); //Remove file or directory including the contents of the directory
 
     //These are the core functions that send a command to OpenLog
-    boolean sendCommand(uint8_t registerNumber, String option1 = "");
+    boolean sendCommand(uint8_t registerNumber, String option1);
 
   private:
 

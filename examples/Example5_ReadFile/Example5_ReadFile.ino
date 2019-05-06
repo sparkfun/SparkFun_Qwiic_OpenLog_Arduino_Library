@@ -57,6 +57,7 @@ void setup()
     }
     myLog.println();
     myLog.println("The End");
+    myLog.syncFile();
   }
   else
   {

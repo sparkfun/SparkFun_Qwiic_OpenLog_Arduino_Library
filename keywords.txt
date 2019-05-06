@@ -31,6 +31,8 @@ removeFile				KEYWORD2
 removeDirectory			KEYWORD2
 remove					KEYWORD2
 sendCommand				KEYWORD2
+syncFile				KEYWORD2
+writeString				KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

@@ -36,6 +36,7 @@ void setup()
   myLog.create("NewFile.txt");
   myLog.println("This is also recorded to the default log file. But a new file has been created");
   myLog.println("If you want to write to a file use appendFile in example 2");
+  myLog.syncFile();
 
   Serial.println("Done!");
 }

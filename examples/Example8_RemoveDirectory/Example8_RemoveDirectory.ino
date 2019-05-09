@@ -36,6 +36,7 @@ void setup()
 
   Serial.println(F("Making a directory and empty files"));
   myLog.println(F("Making a directory and empty files")); //Record something to the default log
+  myLog.syncFile();
 
   //Create some directories and files
   myLog.changeDirectory(".."); //Return to root
@@ -47,6 +48,7 @@ void setup()
   myLog.append("Test3.txt");
 
   myLog.println(F("This is recorded to the last appended file in MONDAY"));
+  myLog.syncFile();
 
   if(myLog.removeFile("Test1.txt") == 1) //Delete a specific file
     Serial.println(F("We have deleted Test1.txt! You can remove the SD card to see."));

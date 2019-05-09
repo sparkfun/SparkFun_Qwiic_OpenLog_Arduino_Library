@@ -41,6 +41,7 @@ void setup()
 
   myLog.append("TheNewMe.txt");
   myLog.println(F("This is in the new file located in the MONDAY directory!"));
+  myLog.sync();
   
   Serial.println(F("Done!"));
 }

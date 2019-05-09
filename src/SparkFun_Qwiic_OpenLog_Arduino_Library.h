@@ -96,6 +96,7 @@ class OpenLog : public Print {
 		byte list;
 		byte rm;
 		byte rmrf;
+    byte syncFile;
 	};
 
 	const memoryMap registerMap = {
@@ -116,10 +117,13 @@ class OpenLog : public Print {
 		.list = 0x0E,
 		.rm = 0x0F,
 		.rmrf = 0x10,
+    .syncFile = 0x11,
 	};
     //These functions override the built-in print functions so that when the user does an 
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
     virtual size_t write(uint8_t character);
+    int writeString(String string);
+    bool syncFile(void);
 
     //By default use the default I2C addres, and use Wire port
     boolean begin(uint8_t deviceAddress = QOL_DEFAULT_ADDRESS, TwoWire &wirePort = Wire);

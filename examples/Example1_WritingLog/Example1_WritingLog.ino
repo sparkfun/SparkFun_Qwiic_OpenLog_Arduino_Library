@@ -41,6 +41,7 @@ void setup()
   batteryVoltage = batteryVoltage + 0.71;
 
   myLog.println("Batt voltage: " + String(batteryVoltage));
+  myLog.syncFile();
 
   Serial.println(F("Done!"));
 }
@@ -53,4 +54,3 @@ void loop()
   digitalWrite(ledPin, LOW);
   delay(1000);
 }
-

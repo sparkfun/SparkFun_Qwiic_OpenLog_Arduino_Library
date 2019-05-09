@@ -45,6 +45,10 @@ void setup()
 
   myLog.println();
   myLog.println(F("Note: We can use the F(\"\") in sketches to move big print statements into program memory to save RAM"));
+  myLog.append("appendMe1.txt");
+  myLog.println(F("Note: We can use the F(\"\") in sketches to move big print statements into program memory to save RAM"));
+  myLog.println(F("Note: We can use the F(\"\") in sketches to move big print statements into program memory to save RAM"));
+  myLog.syncFile();
 
   Serial.println("Done!");
 }
@@ -57,4 +61,3 @@ void loop()
   digitalWrite(ledPin, LOW);
   delay(1000);
 }
-

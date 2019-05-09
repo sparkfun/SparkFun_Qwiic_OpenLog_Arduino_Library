@@ -295,3 +295,38 @@ size_t OpenLog::write(uint8_t character) {
 
   return (1);
 }
+
+int OpenLog::writeString(String string) {
+  _i2cPort->beginTransmission(_deviceAddress);
+  _i2cPort->write(registerMap.writeFile);
+
+  //remember, the rx buffer on the i2c openlog is 32 bytes
+  //and the register address takes up 1 byte so we can only
+  //send 31 data bytes at a time
+  if(string.length() > 31)
+  {
+    return -1;
+  }
+  if (string.length() > 0)
+  {
+    //_i2cPort->print(" "); //Include space
+    _i2cPort->print(string);
+  }
+  
+  if (_i2cPort->endTransmission() != 0)
+    return (0);
+
+  return (1);
+}
+
+bool OpenLog::syncFile(){
+  _i2cPort->beginTransmission(_deviceAddress);
+  _i2cPort->write(registerMap.syncFile);
+  
+  if (_i2cPort->endTransmission() != 0){
+    return (0);    
+  }
+
+
+  return (1);
+}

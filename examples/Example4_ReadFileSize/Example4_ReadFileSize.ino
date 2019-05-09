@@ -31,6 +31,7 @@ void setup()
   
   //Record something to the default log
   myLog.println("OpenLog Read File Size Example");
+  myLog.syncFile();
 
   String myFile = "testme.txt";
 

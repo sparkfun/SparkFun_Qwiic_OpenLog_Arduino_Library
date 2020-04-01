@@ -279,7 +279,11 @@ boolean OpenLog::sendCommand(uint8_t registerNumber, String option1)
   }
   
   if (_i2cPort->endTransmission() != 0)
-    return (false);
+  {
+    #ifndef __SAMD21G18A__
+      return (false);
+    #endif
+  }
 
   return (true);
   //Upon completion any new characters sent to OpenLog will be recorded to this file
@@ -291,8 +295,11 @@ size_t OpenLog::write(uint8_t character) {
   _i2cPort->write(registerMap.writeFile);//Send the byte that corresponds to writing a file
   _i2cPort->write(character);
   if (_i2cPort->endTransmission() != 0)
-    return (0); //Error: Sensor did not ack
-
+  {
+    #ifndef __SAMD21G18A__
+      return (false);
+    #endif
+  }
   return (1);
 }
 
@@ -314,7 +321,11 @@ int OpenLog::writeString(String string) {
   }
   
   if (_i2cPort->endTransmission() != 0)
-    return (0);
+  {
+    #ifndef __SAMD21G18A__
+      return (false);
+    #endif
+  }
 
   return (1);
 }
@@ -323,8 +334,11 @@ bool OpenLog::syncFile(){
   _i2cPort->beginTransmission(_deviceAddress);
   _i2cPort->write(registerMap.syncFile);
   
-  if (_i2cPort->endTransmission() != 0){
-    return (0);    
+  if (_i2cPort->endTransmission() != 0)
+  {
+    #ifndef __SAMD21G18A__
+      return (false);
+    #endif   
   }
 
 

@@ -28,7 +28,7 @@
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
 OpenLog myLog; //Create instance
 
-int ledPin = 13; //Status LED connected to digital pin 13
+int ledPin = LED_BUILTIN; //Status LED connected to digital pin 13
 
 #define STATUS_SD_INIT_GOOD 0
 #define STATUS_LAST_COMMAND_SUCCESS 1
@@ -80,7 +80,7 @@ void loop()
 {
   //Blink the Status LED because we're done!
   digitalWrite(ledPin, HIGH);
-  delay(100);
+  delay(1000);
   digitalWrite(ledPin, LOW);
   delay(1000);
 }

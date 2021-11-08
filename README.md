@@ -1,7 +1,8 @@
 SparkFun Qwiic OpenLog Library
 ===========================================================
 
-![SparkFun Qwiic OpenLog](https://cdn.sparkfun.com/assets/parts/1/3/5/5/4/15164-SparkFun_Qwiic_OpenLog-01.jpg)
+[![SparkFun Qwiic OpenLog](https://cdn.sparkfun.com/assets/parts/1/3/5/5/4/15164-SparkFun_Qwiic_OpenLog-01.jpg)](https://www.sparkfun.com/products/15164)
+
 
 [*SparkFun Qwiic OpenLog (DEV-15164)*](https://www.sparkfun.com/products/15164)
 

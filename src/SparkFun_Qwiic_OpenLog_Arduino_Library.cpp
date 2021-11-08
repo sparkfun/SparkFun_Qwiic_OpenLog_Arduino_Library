@@ -98,7 +98,7 @@ uint8_t OpenLog::getStatus()
 boolean OpenLog::setI2CAddress(uint8_t addr)
 {
   String temp;
-  temp = addr;
+  temp = (String)addr;
   boolean result = sendCommand(registerMap.i2cAddress, temp);
 
   // Upon completion any new communication must be with this new I2C address

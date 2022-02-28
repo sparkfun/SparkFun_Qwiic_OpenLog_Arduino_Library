@@ -54,11 +54,6 @@
 //I2C_BUFFER_LENGTH is defined in Wire.H
 #define I2C_BUFFER_LENGTH BUFFER_LENGTH
 
-#elif defined(__SAMD21G18A__)
-
-//SAMD21 uses RingBuffer.h
-#define I2C_BUFFER_LENGTH SERIAL_BUFFER_SIZE
-
 #elif __MK20DX256__
 //Teensy
 

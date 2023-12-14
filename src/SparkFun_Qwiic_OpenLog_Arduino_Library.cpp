@@ -282,6 +282,8 @@ boolean OpenLog::sendCommand(uint8_t registerNumber, String option1)
   {
 #ifndef __SAMD21G18A__
     return (false);
+#else
+    sendCommand(registerNumber, option1); // Retry
 #endif
   }
 
@@ -299,6 +301,8 @@ size_t OpenLog::write(uint8_t character)
   {
 #ifndef __SAMD21G18A__
     return (false);
+#else
+    write(character); // Retry
 #endif
   }
   return (1);
@@ -326,6 +330,8 @@ int OpenLog::writeString(String string)
   {
 #ifndef __SAMD21G18A__
     return (false);
+#else
+    writeString(string); // Retry
 #endif
   }
 
@@ -341,6 +347,8 @@ bool OpenLog::syncFile()
   {
 #ifndef __SAMD21G18A__
     return (false);
+#else
+    syncFile(); // Retry
 #endif
   }
 
